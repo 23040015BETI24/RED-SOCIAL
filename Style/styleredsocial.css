@@ -1,0 +1,862 @@
+/* ------------------------- */
+/* RESET & BASE */
+/* ------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+    /* Colores Futuristas */
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #06b6d4;
+    --accent: #f59e0b;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    
+    /* Backgrounds */
+    --bg-primary: #0f0f23;
+    --bg-secondary: #1a1b3a;
+    --bg-surface: rgba(255, 255, 255, 0.05);
+    --bg-glass: rgba(255, 255, 255, 0.1);
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    --bg-mesh: radial-gradient(circle at 25% 25%, #6366f1 0%, transparent 50%), 
+               radial-gradient(circle at 75% 75%, #06b6d4 0%, transparent 50%),
+               radial-gradient(circle at 50% 50%, #f59e0b 0%, transparent 50%);
+    
+    /* Texto */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    
+    /* Efectos */
+    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+    --shadow-neon: 0 0 30px rgba(6, 182, 212, 0.4);
+    --shadow-heavy: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+    --shadow-float: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    
+    /* Bordes */
+    --border-radius: 16px;
+    --border-radius-xl: 24px;
+    --border-glass: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Animaciones */
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+body {
+    background: var(--bg-primary);
+    background-image: var(--bg-mesh);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 16px;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(245, 158, 11, 0.1) 0%, transparent 50%);
+    animation: meshMove 20s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes meshMove {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -30px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* Scrollbar Futurista */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+    border-radius: 10px;
+    box-shadow: var(--shadow-glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--primary-dark) 0%, var(--secondary) 100%);
+}
+
+/* Links Holográficos */
+a {
+    color: var(--text-primary);
+    text-decoration: none;
+    position: relative;
+    transition: var(--transition);
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.4s ease;
+    box-shadow: var(--shadow-glow);
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* Botones Holográficos */
+button {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: var(--text-primary);
+    border: none;
+    padding: 14px 28px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    transition: var(--transition-bounce);
+    box-shadow: var(--shadow-glow);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border: var(--border-glass);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: rotate(45deg);
+    transition: all 0.6s;
+    opacity: 0;
+}
+
+button:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-neon), var(--shadow-float);
+}
+
+button:hover::before {
+    animation: shine 0.8s ease-in-out;
+    opacity: 1;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+button:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+/* ------------------------- */
+/* HEADER FUTURISTA */
+/* ------------------------- */
+header {
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: var(--border-glass);
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-heavy);
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+    animation: lineGlow 2s ease-in-out infinite;
+}
+
+@keyframes lineGlow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+    text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+    position: relative;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+nav a {
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid transparent;
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(45deg, var(--primary), transparent, var(--secondary));
+    border-radius: var(--border-radius);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+nav a:hover {
+    background: var(--bg-glass);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+nav a:hover::before {
+    opacity: 1;
+}
+
+/* ------------------------- */
+/* LOGIN HOLOGRÁFICO */
+/* ------------------------- */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+}
+
+.login-body::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+.login-box {
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 60px;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-heavy);
+    border: var(--border-glass);
+    text-align: center;
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    overflow: hidden;
+    animation: slideUpBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes slideUpBounce {
+    0% {
+        opacity: 0;
+        transform: translateY(60px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.login-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    background-size: 200% 100%;
+    animation: borderFlow 3s ease infinite;
+}
+
+@keyframes borderFlow {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+}
+
+.login-box .logo {
+    font-size: 3.2rem;
+    font-weight: 900;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+    text-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+}
+
+.login-box input {
+    width: 100%;
+    padding: 18px 24px;
+    margin: 16px 0;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    border: var(--border-glass);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    color: var(--text-primary);
+    transition: var(--transition);
+    position: relative;
+}
+
+.login-box input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.login-box input::placeholder {
+    color: var(--text-muted);
+}
+
+.login-box .error {
+    display: none;
+    color: var(--danger);
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(239, 68, 68, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--border-radius);
+    font-weight: 500;
+}
+
+.login-box .note {
+    margin-top: 30px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ------------------------- */
+/* FEED HOLOGRÁFICO */
+/* ------------------------- */
+.feed {
+    max-width: 720px;
+    margin: 50px auto;
+    padding: 0 24px;
+}
+
+.feed h2 {
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+    text-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+}
+
+.post {
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 35px;
+    margin-bottom: 32px;
+    border-radius: var(--border-radius-xl);
+    border: var(--border-glass);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+}
+
+.post:nth-child(even) {
+    animation-delay: 0.1s;
+}
+
+.post:nth-child(odd) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+}
+
+.post::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.post::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.03) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.post:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-neon), var(--shadow-float);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.post:hover::before {
+    transform: scaleX(1);
+}
+
+.post:hover::after {
+    opacity: 1;
+}
+
+.post h3 {
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+    position: relative;
+    z-index: 1;
+}
+
+.post p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+}
+
+/* ------------------------- */
+/* PERFIL HOLOGRÁFICO */
+/* ------------------------- */
+.perfil {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 50px;
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--border-radius-xl);
+    border: var(--border-glass);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-heavy);
+}
+
+.perfil::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+    background-size: 300% 300%;
+    animation: gradientShift 6s ease infinite;
+}
+
+.perfil::after {
+    content: '';
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
+
+.perfil img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-neon);
+    position: relative;
+    z-index: 2;
+    transition: var(--transition-bounce);
+    backdrop-filter: blur(10px);
+}
+
+.perfil img:hover {
+    transform: scale(1.05) rotate(2deg);
+    box-shadow: var(--shadow-float), 0 0 40px rgba(99, 102, 241, 0.6);
+}
+
+.perfil h2 {
+    color: var(--text-primary);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(45deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.perfil p {
+    margin: 18px 0;
+    color: var(--text-secondary);
+    font-size: 16px;
+    position: relative;
+    z-index: 2;
+    line-height: 1.6;
+}
+
+/* ------------------------- */
+/* AMIGOS HOLOGRÁFICO */
+/* ------------------------- */
+.amigos {
+    max-width: 520px;
+    margin: 50px auto;
+    padding: 40px;
+    background: var(--bg-surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--border-radius-xl);
+    border: var(--border-glass);
+    box-shadow: var(--shadow-heavy);
+    position: relative;
+    overflow: hidden;
+}
+
+.amigos::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    border-radius: var(--border-radius-xl);
+    z-index: -1;
+    opacity: 0.3;
+    filter: blur(10px);
+}
+
+.amigos h2 {
+    margin-bottom: 35px;
+    font-size: 2rem;
+    font-weight: 800;
+    text-align: center;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+}
+
+.amigos ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+}
+
+.amigos li {
+    padding: 20px 24px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    border: var(--border-glass);
+    border-radius: var(--border-radius);
+    text-align: left;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.amigos li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+    transform: scaleY(0);
+    transition: transform 0.4s ease;
+}
+
+.amigos li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.6s;
+}
+
+.amigos li:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(8px) scale(1.02);
+    box-shadow: var(--shadow-glow);
+}
+
+.amigos li:hover::before {
+    transform: scaleY(1);
+}
+
+.amigos li:hover::after {
+    left: 100%;
+}
+
+/* ------------------------- */
+/* ANIMACIONES GLOBALES */
+/* ------------------------- */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: var(--shadow-glow); }
+    50% { box-shadow: var(--shadow-neon); }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+.glowing {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* ------------------------- */
+/* RESPONSIVE FUTURISTA */
+/* ------------------------- */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 24px 20px;
+        gap: 20px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    nav {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    nav a {
+        padding: 10px 16px;
+        font-size: 14px;
+    }
+    
+    .login-box {
+        width: 95%;
+        padding: 40px 30px;
+        margin: 15px;
+    }
+    
+    .login-box .logo {
+        font-size: 2.4rem;
+    }
+    
+    .feed, .perfil, .amigos {
+        width: 95%;
+        margin: 30px auto;
+        padding: 30px 20px;
+    }
+    
+    .post {
+        padding: 25px;
+    }
+    
+    .perfil img {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .feed h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .login-box {
+        padding: 30px 20px;
+    }
+    
+    .login-box .logo {
+        font-size: 2rem;
+    }
+    
+    .feed h2 {
+        font-size: 1.8rem;
+    }
+    
+    .post h3 {
+        font-size: 1.3rem;
+    }
+    
+    button {
+        padding: 12px 22px;
+        font-size: 13px;
+    }
+    
+    .perfil img {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .amigos li {
+        padding: 16px 20px;
+    }
+}
+
+/* ------------------------- */
+/* UTILIDADES FUTURISTAS */
+/* ------------------------- */
+.glass-morphism {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: var(--border-glass);
+}
+
+.neon-glow {
+    box-shadow: var(--shadow-neon);
+}
+
+.text-gradient {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    transition: var(--transition);
+}
+
+/* Efectos de partículas */
+.particle-bg::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.2) 0%, transparent 25%),
+        radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.2) 0%, transparent 25%);
+    animation: particleFloat 15s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(15px, -15px) scale(1.1); }
+    66% { transform: translate(-15px, 15px) scale(0.9); }
+}
